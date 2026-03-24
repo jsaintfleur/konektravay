@@ -1,0 +1,16 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { generateResume } from '@/lib/ai';
+
+export async function POST(req: NextRequest) {
+  try {
+    const profile = await req.json();
+    if (!profile?.name) {
+      return NextResponse.json({ error: 'profile.name required' }, { status: 400 });
+    }
+    const resume = await generateResume(profile);
+    return NextResponse.json({ resume });
+  } catch (err: any) {
+    console.error('[generate-resume]', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}

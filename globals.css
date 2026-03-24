@@ -1,0 +1,109 @@
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+const EXAMPLES = [
+  {
+    label: '👩 Marie-Claire',
+    text: 'Mwen pale angle ak kreyol ayisyen. Mwen te travay nan yon call center pandan 1 an, mwen reponn apèl ak imèl kliyan. Mwen konn Microsoft Word ak Excel. Mwen disponib 40 è pa semèn.',
+    name: 'Marie-Claire',
+  },
+  {
+    label: '👨 Réginald',
+    text: "J'utilise Instagram et Facebook pour promouvoir des commerces locaux à Cap-Haïtien. Je sais créer des flyers avec Canva et je prends des photos pour les réseaux sociaux. Je parle français et créole.",
+    name: 'Réginald',
+  },
+  {
+    label: '👩 Nadia',
+    text: 'I translate documents from French to English for a local NGO. I also speak Haitian Creole natively. I have fast typing skills and I\'m good with computers and Google Docs.',
+    name: 'Nadia',
+  },
+];
+
+export default function OnboardPage() {
+  const router = useRouter();
+  const [input, setInput] = useState('');
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit() {
+    if (!input.trim()) { setError('Tanpri ekri konpetans ou anvan.'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/extract-skills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rawInput: input, name: name || 'Utilisateur' }),
+      });
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      // Store in sessionStorage for demo flow (replace with DB in production)
+      sessionStorage.setItem('kt_profile', JSON.stringify({ ...data, name: name || 'Utilisateur', rawInput: input }));
+      router.push('/profile');
+    } catch {
+      setError('Yon erè te rive. Eseye ankò.');
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className="max-w-lg mx-auto px-5 pt-8 pb-20">
+      <h2 className="section-title">Di nou sa ou konnen</h2>
+      <p className="section-sub">Ekri jan ou vle — Kreyòl, Français, oswa English.</p>
+
+      <div className="bg-gold-pale border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800 mb-5">
+        <strong>Konsèy:</strong> Ekri nenpòt — travay ou fè, lang ou pale, lojisyèl ou itilize.
+      </div>
+
+      <div className="card">
+        <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+          Chwazi yon egzanp
+        </label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {EXAMPLES.map(ex => (
+            <button
+              key={ex.label}
+              onClick={() => { setInput(ex.text); setName(ex.name); }}
+              className="px-3 py-1.5 rounded-full text-sm font-medium border border-gray-200 bg-white text-brand hover:bg-brand-pale transition-colors"
+            >
+              {ex.label}
+            </button>
+          ))}
+        </div>
+
+        <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
+          Konpetans ou
+        </label>
+        <textarea
+          className="input-field min-h-[120px] resize-y mb-4"
+          placeholder="Ekri konpetans ou la..."
+          value={input}
+          onChange={e => setInput(e.target.value)}
+        />
+
+        <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
+          Non ou
+        </label>
+        <input
+          type="text"
+          className="input-field mb-5"
+          placeholder="Egzanp: Marie-Claire"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+
+        {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
+
+        <button
+          className="btn-primary"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? 'AI ap travay...' : 'Analiz ak AI →'}
+        </button>
+      </div>
+    </main>
+  );
+}
