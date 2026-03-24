@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KonektTravay — Connect with Work Made for You</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #1B4D3E;
+    --brand-light: #2E7D5E;
+    --brand-pale: #E8F5EF;
+    --gold: #C8922A;
+    --gold-pale: #FDF4E7;
+    --danger: #C0392B;
+    --danger-pale: #FDECEA;
+    --warn: #D68910;
+    --warn-pale: #FEF9E7;
+    --safe: #1B7A4A;
+    --safe-pale: #E9F7EE;
+    --text: #1A1A1A;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --bg: #FAFAF8;
+    --card: #FFFFFF;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--brand);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 22px;
+    letter-spacing: -0.3px;
+  }
+  .logo span { color: #8ECFB0; }
+  .lang-pills { display: flex; gap: 6px; }
+  .lang-pill {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+    transition: all 0.2s;
+  }
+  .lang-pill.active, .lang-pill:hover {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    border-color: rgba(255,255,255,0.6);
+  }
+
+  /* STEP NAV */
+  .step-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .step-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .step-btn .num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step-btn.active {
+    background: var(--brand-pale);
+    color: var(--brand);
+  }
+  .step-btn.active .num {
+    background: var(--brand);
+    color: #fff;
+  }
+  .step-btn.done { color: var(--brand-light); }
+  .step-btn.done .num {
+    background: var(--brand-pale);
+    color: var(--brand);
+  }
+  .step-btn.done .num::after { content: '✓'; }
+  .step-btn.done .num span { display: none; }
+
+  /* MAIN */
+  main { max-width: 680px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* HERO */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--brand-pale);
+    color: var(--brand);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--brand);
+    margin-bottom: 14px;
+  }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--brand);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand);
+    color: #fff;
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s, transform 0.1s;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-primary:hover { background: var(--brand-light); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    color: var(--brand);
+    padding: 11px 22px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1.5px solid var(--brand);
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .btn-secondary:hover { background: var(--brand-pale); }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  /* FORM */
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  input[type=text], textarea, select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s;
+    outline: none;
+    margin-bottom: 16px;
+  }
+  input[type=text]:focus, textarea:focus, select:focus {
+    border-color: var(--brand-light);
+    background: #fff;
+  }
+  textarea { min-height: 120px; resize: vertical; }
+
+  .hint-box {
+    background: var(--gold-pale);
+    border: 1px solid #F0D49B;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #7D5A12;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .hint-box strong { font-weight: 600; }
+
+  /* PERSONA CHIPS */
+  .persona-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .persona-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--brand);
+    transition: all 0.15s;
+  }
+  .persona-chip:hover {
+    background: var(--brand-pale);
+    border-color: var(--brand-light);
+  }
+
+  /* AI PROCESSING */
+  .processing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--brand-pale);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-steps { margin-top: 20px; text-align: left; }
+  .proc-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .proc-step:last-child { border-bottom: none; }
+  .proc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .proc-dot.done { background: var(--safe); }
+  .proc-dot.active {
+    background: var(--brand);
+    animation: pulse 1s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* SKILL TAGS */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .tag-domain { background: var(--brand-pale); color: var(--brand); }
+  .tag-language { background: #EDE9FE; color: #5B21B6; }
+  .tag-technical { background: #EFF6FF; color: #1D4ED8; }
+  .tag-soft { background: #FEF3C7; color: #92400E; }
+
+  .match-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .match-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 3px;
+    transition: width 0.8s ease;
+  }
+
+  /* RESUME */
+  .resume-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .resume-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--brand);
+  }
+  .resume-headline {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 4px 0 16px;
+  }
+  .resume-divider {
+    border: none;
+    border-top: 1.5px solid var(--brand-pale);
+    margin: 14px 0;
+  }
+  .resume-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+
+  /* JOB CARDS */
+  .job-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .job-card:hover {
+    border-color: var(--brand-light);
+    box-shadow: 0 2px 12px rgba(27,77,62,0.08);
+  }
+  .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .job-title { font-weight: 600; font-size: 15px; }
+  .job-company { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .job-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .scam-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .scam-safe { background: var(--safe-pale); color: var(--safe); }
+  .scam-warn { background: var(--warn-pale); color: var(--warn); }
+  .scam-danger { background: var(--danger-pale); color: var(--danger); }
+
+  .match-score {
+    font-size: 22px;
+    font-family: 'DM Serif Display', serif;
+    color: var(--brand);
+  }
+
+  /* TRACKER KANBAN */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .kanban-col {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+  }
+  .kanban-header {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .kanban-count {
+    background: var(--border);
+    color: var(--text-muted);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+  }
+  .kanban-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .kanban-item-title { font-weight: 600; margin-bottom: 4px; }
+  .kanban-item-sub { color: var(--text-muted); font-size: 12px; }
+
+  /* INTERVIEW CHAT */
+  .chat-window {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    height: 360px;
+    overflow-y: auto;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .msg-ai {
+    background: var(--brand-pale);
+    color: var(--brand);
+    border-bottom-left-radius: 2px;
+    align-self: flex-start;
+  }
+  .msg-user {
+    background: var(--brand);
+    color: #fff;
+    border-bottom-right-radius: 2px;
+    align-self: flex-end;
+  }
+  .msg-feedback {
+    background: var(--gold-pale);
+    color: #7D5A12;
+    border: 1px solid #F0D49B;
+    font-size: 13px;
+    align-self: flex-start;
+    max-width: 90%;
+  }
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .chat-input-row textarea {
+    flex: 1;
+    margin-bottom: 0;
+    min-height: 48px;
+    max-height: 100px;
+    resize: none;
+  }
+  .btn-send {
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .btn-send:hover { background: var(--brand-light); }
+  .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--brand);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* MISC */
+  .gap-chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .gap-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: var(--danger-pale);
+    color: var(--danger);
+    border: 1px solid #F5B7B1;
+  }
+
+  .success-banner {
+    background: var(--safe-pale);
+    border: 1px solid #A9DFBF;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    color: var(--safe);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: 30px; }
+    .stat-row { grid-template-columns: repeat(3,1fr); }
+    .kanban { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Konekt<span>Travay</span></div>
+  <div class="lang-pills">
+    <div class="lang-pill active" onclick="setLang('ht')">Kreyòl</div>
+    <div class="lang-pill" onclick="setLang('fr')">Français</div>
+    <div class="lang-pill" onclick="setLang('en')">English</div>
+  </div>
+</nav>
+
+<div class="step-nav" id="stepNav">
+  <button class="step-btn active" onclick="goTo(0)" id="s0">
+    <span class="num"><span>1</span></span> Akèy
+  </button>
+  <button class="step-btn" onclick="goTo(1)" id="s1">
+    <span class="num"><span>2</span></span> Konpetans
+  </button>
+  <button class="step-btn" onclick="goTo(2)" id="s2">
+    <span class="num"><span>3</span></span> Pwofil
+  </button>
+  <button class="step-btn" onclick="goTo(3)" id="s3">
+    <span class="num"><span>4</span></span> Rezime
+  </button>
+  <button class="step-btn" onclick="goTo(4)" id="s4">
+    <span class="num"><span>5</span></span> Travay
+  </button>
+  <button class="step-btn" onclick="goTo(5)" id="s5">
+    <span class="num"><span>6</span></span> Swivi
+  </button>
+  <button class="step-btn" onclick="goTo(6)" id="s6">
+    <span class="num"><span>7</span></span> Entèvyou
+  </button>
+</div>
+
+<main>
+
+<!-- SCREEN 0: LANDING -->
+<div class="screen active" id="screen0">
+  <div class="hero-badge">🌍 AI pou jèn ayisyen</div>
+  <h1 class="hero-title">Tounen travay<br><em>global</em> fasil.</h1>
+  <p class="hero-sub">Ekri ki sa ou konnen fè — n ap konvèti li an pwofil pwofesyonèl, jwenn travay a distans, epi pwoteje ou kont fwod.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">4.5M</div>
+      <div class="stat-label">Jèn ayisyen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">25+</div>
+      <div class="stat-label">Travay vérifye</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3 lang</div>
+      <div class="stat-label">Kreyòl, FR, EN</div>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="goTo(1)">Kòmanse Gratis →</button>
+  <button class="btn-secondary" onclick="goTo(1)">Gade demo</button>
+</div>
+
+<!-- SCREEN 1: SKILL INTAKE -->
+<div class="screen" id="screen1">
+  <div class="section-title">Di nou sa ou konnen</div>
+  <p class="section-sub">Ekri jan ou vle — Kreyòl, Français, oswa English. Pa bezwen pwofesyonèl.</p>
+
+  <div class="hint-box">
+    <strong>Konsèy:</strong> Ekri nenpòt bagay — travay ou fè, lang ou pale, lojisyèl ou itilize, oswa sèvis ou ofri. Egzanp: <em>"Mwen pale angle ak kreyol, mwen travay nan telefòn, mwen konn Excel"</em>
+  </div>
+
+  <div class="card">
+    <label>Chwazi yon egzanp oswa ekri pa ou menm</label>
+    <div class="persona-row">
+      <div class="persona-chip" onclick="fillPersona('marie')">👩 Marie-Claire</div>
+      <div class="persona-chip" onclick="fillPersona('reginald')">👨 Réginald</div>
+      <div class="persona-chip" onclick="fillPersona('nadia')">👩 Nadia</div>
+    </div>
+    <textarea id="skillInput" placeholder="Ekri konpetans ou la..."></textarea>
+    <label>Non ou</label>
+    <input type="text" id="userName" placeholder="Egzanp: Marie-Claire">
+    <button class="btn-primary" onclick="processSkills()">Analiz ak AI →</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: PROCESSING + PROFILE -->
+<div class="screen" id="screen2">
+  <div id="processingView">
+    <div class="processing-card">
+      <div class="spinner"></div>
+      <div style="font-weight:600;font-size:16px;color:var(--brand)">AI ap travay...</div>
+      <div style="color:var(--text-muted);font-size:14px;margin-top:6px">Analize konpetans ou yo</div>
+      <div class="processing-steps">
+        <div class="proc-step" id="ps1"><div class="proc-dot active" id="pd1"></div>Ekstraksyon konpetans (Creole/FR/EN)</div>
+        <div class="proc-step" id="ps2"><div class="proc-dot" id="pd2"></div>Klasifikasyon nivo eksperyans</div>
+        <div class="proc-step" id="ps3"><div class="proc-dot" id="pd3"></div>Kalkile sou chak travay</div>
+        <div class="proc-step" id="ps4"><div class="proc-dot" id="pd4"></div>Jenere pwofil pwofesyonèl</div>
+      </div>
+    </div>
+  </div>
+  <div id="profileView" style="display:none">
+    <div class="success-banner">✓ Pwofil kreye avèk siksè!</div>
+    <div class="section-title" id="profileName">Pwofil</div>
+    <p class="section-sub" id="profileSummary"></p>
+
+    <div class="card">
+      <div class="card-title">Konpetans idantifye</div>
+      <div class="tag-row" id="skillTags"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Nivo eksperyans</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div id="levelBadge" style="padding:6px 16px;border-radius:20px;font-weight:600;font-size:14px"></div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-muted)" id="levelDesc"></div>
+          <div class="match-bar" style="margin-top:8px"><div class="match-fill" id="levelFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="gapsCard" style="display:none">
+      <div class="card-title">Amelyorasyon pwopoze (opsyonèl)</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Aprann bagay sa yo pou ogmante chans ou yo:</div>
+      <div class="gap-chip-row" id="gapTags"></div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo(3)">Jenere Rezime →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: RESUME -->
+<div class="screen" id="screen3">
+  <div class="section-title">Rezime ou</div>
+  <p class="section-sub">Jenere pa AI — prè pou voye bay anplwayè entènasyonal.</p>
+
+  <div class="resume-box" id="resumeBox">
+    <div class="resume-name" id="resumeName">—</div>
+    <div class="resume-headline" id="resumeHeadline">—</div>
+    <hr class="resume-divider">
+    <div class="resume-section-title">Rezime</div>
+    <p id="resumeSummary" style="font-size:14px;color:var(--text);margin-bottom:14px">—</p>
+    <hr class="resume-divider">
+    <div class="resume-section-title">Konpetans</div>
+    <div class="tag-row" id="resumeSkills" style="margin-bottom:14px"></div>
+    <hr class="resume-divider">
+    <div class="resume-section-title">Eksperyans</div>
+    <div id="resumeExp" style="font-size:14px;"></div>
+    <hr class="resume-divider">
+    <div class="resume-section-title">Lang</div>
+    <div id="resumeLangs" style="font-size:14px;"></div>
+    <hr class="resume-divider">
+    <div class="resume-section-title">Disponibilite</div>
+    <div id="resumeAvail" style="font-size:14px;color:var(--text-muted)"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:16px">
+    <button class="btn-primary" style="flex:1" onclick="goTo(4)">Wè Travay Ki Matche →</button>
+    <button class="btn-secondary" style="flex:1;margin-top:0" onclick="alert('PDF downloading... (PDF generation requires Puppeteer in production)')">Telechaje PDF</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: JOB MATCHES -->
+<div class="screen" id="screen4">
+  <div class="section-title">Travay ki matche</div>
+  <p class="section-sub">Klasman pa AI — ki baze sou konpetans ou ak risk fwod yo.</p>
+
+  <div id="jobList"></div>
+
+  <div style="background:var(--brand-pale);border-radius:var(--radius-sm);padding:14px 16px;font-size:13px;color:var(--brand);margin-top:8px">
+    <strong>Konsèy:</strong> Toujou verify konpayi a sou Google anvan ou aplike. Si yo mande lajan anvan, sa se yon siy move.
+  </div>
+</div>
+
+<!-- SCREEN 5: APPLICATION TRACKER -->
+<div class="screen" id="screen5">
+  <div class="section-title">Swivi aplikasyon</div>
+  <p class="section-sub">Kenbe yon tras tout travay ou aplike yo.</p>
+
+  <div class="kanban">
+    <div class="kanban-col">
+      <div class="kanban-header">Aplike <span class="kanban-count">2</span></div>
+      <div class="kanban-item">
+        <div class="kanban-item-title">Bilingual Customer Support</div>
+        <div class="kanban-item-sub">RemoteFirst Inc. · Jodi a</div>
+      </div>
+      <div class="kanban-item">
+        <div class="kanban-item-title">Haitian Creole Transcriptionist</div>
+        <div class="kanban-item-sub">TranscribeNow · 2 jou pase</div>
+      </div>
+    </div>
+    <div class="kanban-col">
+      <div class="kanban-header">Entèvyou <span class="kanban-count">1</span></div>
+      <div class="kanban-item" style="border-left:3px solid var(--brand)">
+        <div class="kanban-item-title">French-English Translator</div>
+        <div class="kanban-item-sub">LinguaWork · Madi 10am UTC</div>
+      </div>
+    </div>
+    <div class="kanban-col">
+      <div class="kanban-header">Ofè <span class="kanban-count">0</span></div>
+      <div style="font-size:12px;color:var(--text-muted);padding:8px 0">Kontinye aplike!</div>
+    </div>
+    <div class="kanban-col">
+      <div class="kanban-header">Rejte <span class="kanban-count">1</span></div>
+      <div class="kanban-item" style="opacity:0.6">
+        <div class="kanban-item-title">VA Administrative Support</div>
+        <div class="kanban-item-sub">TaskBridge · 5 jou pase</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-primary" style="margin-top:20px" onclick="goTo(6)">Prepare pou Entèvyou →</button>
+</div>
+
+<!-- SCREEN 6: INTERVIEW PREP -->
+<div class="screen" id="screen6">
+  <div class="section-title">Pratike entèvyou</div>
+  <p class="section-sub" id="interviewJobTitle">Bilingual Customer Support — RemoteFirst Inc.</p>
+
+  <div class="chat-window" id="chatWindow"></div>
+
+  <div class="chat-input-row">
+    <textarea id="chatInput" placeholder="Ekri repons ou..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+    <button class="btn-send" id="sendBtn" onclick="sendMsg()">↑</button>
+  </div>
+
+  <div style="font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center">
+    AI pap kenbe repons ou — pratike lib
+  </div>
+</div>
+
+</main>
+
+<script>
+const PERSONAS = {
+  marie: {
+    name: 'Marie-Claire',
+    text: "Mwen pale angle ak kreyol ayisyen. Mwen te travay nan yon call center pandan 1 an, mwen reponn apèl ak imèl kliyan. Mwen konn Microsoft Word ak Excel. Mwen disponib 40 è pa semèn."
+  },
+  reginald: {
+    name: 'Réginald',
+    text: "J'utilise Instagram et Facebook pour promouvoir des commerces locaux à Cap-Haïtien. Je sais créer des flyers avec Canva et je prends des photos pour les réseaux sociaux. Je parle français et créole."
+  },
+  nadia: {
+    name: 'Nadia',
+    text: "I translate documents from French to English for a local NGO. I also speak Haitian Creole natively. I have fast typing skills and I'm good with computers and Google Docs."
+  }
+};
+
+const PROFILES = {
+  marie: {
+    skills: [
+      {name:'Customer Support',cat:'domain'},{name:'English',cat:'language'},
+      {name:'Haitian Creole',cat:'language'},{name:'Microsoft Excel',cat:'technical'},
+      {name:'Microsoft Word',cat:'technical'},{name:'Email Handling',cat:'soft'}
+    ],
+    level: 'entry', levelLabel: 'Antrè', levelDesc: '1 an eksperyans call center — prè pou travay a distans', levelPct: 38,
+    summary: 'Bilingual customer support specialist with 1 year BPO experience, fluent in English and Haitian Creole.',
+    gaps: ['Google Workspace', 'CRM software basics'],
+    resume: {
+      headline: 'Bilingual Customer Support Specialist | EN/HT | 1 Year BPO Experience',
+      summary: 'Detail-oriented customer support professional fluent in English and Haitian Creole with one year of hands-on call center experience. Skilled in written and verbal communication, email handling, and Microsoft Office. Seeking remote customer service opportunities with international teams.',
+      experience: [{role:'Customer Support Agent',context:'Handled inbound calls and emails for a local call center, resolved customer complaints, and maintained accurate records in Excel.',duration:'1 year'}],
+      languages: ['English: Fluent','Haitian Creole: Native','French: Basic'],
+      availability: '40 hours/week, flexible timezone'
+    }
+  },
+  reginald: {
+    skills: [
+      {name:'Social Media Marketing',cat:'domain'},{name:'Instagram',cat:'technical'},
+      {name:'Facebook',cat:'technical'},{name:'Canva',cat:'technical'},
+      {name:'French',cat:'language'},{name:'Haitian Creole',cat:'language'},
+      {name:'Photography',cat:'soft'}
+    ],
+    level: 'mid', levelLabel: 'Entèmedyè', levelDesc: 'Eksperyans pratik an marketing dijital ak kreyasyon kontni', levelPct: 58,
+    summary: 'Social media manager and content creator fluent in French and Creole with experience promoting local businesses.',
+    gaps: ['Meta Business Suite', 'Content scheduling tools'],
+    resume: {
+      headline: 'Social Media Manager & Content Creator | FR/HT | Canva + Instagram + Facebook',
+      summary: 'Creative social media specialist with practical experience managing Instagram and Facebook accounts for local businesses in Cap-Haïtien. Proficient in Canva for graphic design, photo content, and community engagement. Bilingual in French and Haitian Creole.',
+      experience: [{role:'Freelance Social Media Manager',context:'Managed social media presence for 3+ local businesses, created promotional flyers in Canva, grew follower counts, and engaged with customer comments and DMs.',duration:'18 months'}],
+      languages: ['French: Fluent','Haitian Creole: Native','English: Basic'],
+      availability: '20–30 hours/week'
+    }
+  },
+  nadia: {
+    skills: [
+      {name:'Translation FR→EN',cat:'domain'},{name:'French',cat:'language'},
+      {name:'English',cat:'language'},{name:'Haitian Creole',cat:'language'},
+      {name:'Google Docs',cat:'technical'},{name:'Fast Typing',cat:'soft'},
+      {name:'Document Processing',cat:'domain'}
+    ],
+    level: 'mid', levelLabel: 'Entèmedyè', levelDesc: 'Eksperyans tradiksyon pwofesyonèl ak twa lang matènèl', levelPct: 65,
+    summary: 'Trilingual translator (French, English, Haitian Creole) with NGO document translation experience.',
+    gaps: ['SDL Trados basics', 'Legal translation terminology'],
+    resume: {
+      headline: 'Trilingual Translator & Transcriptionist | FR / EN / HT | NGO Verified',
+      summary: 'Experienced translator and transcriptionist fluent in French, English, and Haitian Creole. Translated NGO communications, reports, and correspondence for international organizations. Combines linguistic precision with fast typing speed and strong attention to detail.',
+      experience: [{role:'Translator & Document Specialist',context:'Translated organizational reports, field communications, and donor correspondence between French and English for an international NGO operating in Haiti.',duration:'2 years'}],
+      languages: ['English: Fluent','French: Fluent','Haitian Creole: Native'],
+      availability: '20 hours/week, part-time'
+    }
+  }
+};
+
+const JOBS = [
+  {title:'Bilingual Customer Support (EN/HT)',company:'RemoteFirst Inc.',pay:'$6–10/hr',method:'Wise, PayPal',lang:'English + Creole',scam:5,match:94},
+  {title:'Haitian Creole Transcriptionist',company:'TranscribeNow',pay:'$0.80–1.50/audio-min',method:'PayPal, Wise',lang:'Haitian Creole',scam:5,match:91},
+  {title:'French-English Translator',company:'LinguaWork',pay:'$0.05–0.12/word',method:'Wise, PayPal',lang:'French + English',scam:10,match:87},
+  {title:'Online Research Assistant',company:'ResearchPro',pay:'$4–7/hr',method:'PayPal',lang:'English',scam:10,match:79},
+  {title:'Data Entry Specialist',company:'DataStream LLC',pay:'$3–5/hr',method:'Payoneer, Wise',lang:'English',scam:15,match:71},
+];
+
+const INTERVIEW_QA = [
+  {q:"Tell me about yourself and why you want this role.", fb:"Good start — try to mention your most relevant skill in the first sentence."},
+  {q:"How do you handle a frustrated customer who is upset about a delayed order?", fb:"Excellent! Mentioning empathy first is the right approach. You could also add that you'd check the order status in real-time."},
+  {q:"What is your internet connection like and how do you handle outages?", fb:"Great answer. Employers love hearing about backup plans. A mobile data backup is a strong point."},
+  {q:"Can you type quickly and accurately? What tools do you use for communication?", fb:"Perfect — listing specific tools like Gmail, WhatsApp, and Slack shows you're ready for remote work."},
+  {q:"Where do you see yourself in 2 years?", fb:"Solid answer. Showing ambition while staying realistic is the right balance for entry-level interviews."},
+];
+
+let currentStep = 0;
+let currentPersona = null;
+let chatStep = 0;
+let isAITyping = false;
+
+const labels = {
+  ht: ['Akèy','Konpetans','Pwofil','Rezime','Travay','Swivi','Entèvyou'],
+  fr: ['Accueil','Compétences','Profil','CV','Emplois','Suivi','Entretien'],
+  en: ['Home','Skills','Profile','Resume','Jobs','Tracker','Interview']
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-pill').forEach((el,i)=>el.classList.toggle('active',['ht','fr','en'][i]===lang));
+  const btns = document.querySelectorAll('.step-btn');
+  btns.forEach((btn,i)=>{
+    const span = btn.querySelector('span:not(.num)') || btn.lastChild;
+    if(btn.lastChild.nodeType===3) btn.lastChild.textContent=' '+labels[lang][i];
+  });
+}
+
+function goTo(step) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen'+step).classList.add('active');
+  document.querySelectorAll('.step-btn').forEach((btn,i)=>{
+    btn.classList.remove('active','done');
+    if(i<step) btn.classList.add('done');
+    if(i===step) btn.classList.add('active');
+  });
+  currentStep = step;
+  window.scrollTo(0,0);
+}
+
+function fillPersona(key) {
+  currentPersona = key;
+  document.getElementById('skillInput').value = PERSONAS[key].text;
+  document.getElementById('userName').value = PERSONAS[key].name;
+}
+
+function processSkills() {
+  const input = document.getElementById('skillInput').value.trim();
+  const name = document.getElementById('userName').value.trim() || 'Utilisateur';
+  if(!input){alert('Tanpri ekri konpetans ou anvan.');return;}
+  goTo(2);
+  // Determine persona
+  if(!currentPersona) {
+    if(input.toLowerCase().includes('angle')||input.toLowerCase().includes('call center')) currentPersona='marie';
+    else if(input.toLowerCase().includes('instagram')||input.toLowerCase().includes('canva')) currentPersona='reginald';
+    else currentPersona='nadia';
+  }
+  simulateProcessing(name);
+}
+
+function simulateProcessing(name) {
+  const steps = ['pd1','pd2','pd3','pd4'];
+  let i = 0;
+  const iv = setInterval(()=>{
+    if(i>0) {document.getElementById(steps[i-1]).classList.remove('active');document.getElementById(steps[i-1]).classList.add('done');}
+    if(i<steps.length) {document.getElementById(steps[i]).classList.add('active');i++;}
+    else {
+      clearInterval(iv);
+      setTimeout(()=>showProfile(name),600);
+    }
+  }, 700);
+}
+
+function showProfile(name) {
+  document.getElementById('processingView').style.display='none';
+  document.getElementById('profileView').style.display='block';
+  const p = PROFILES[currentPersona];
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileSummary').textContent = p.summary;
+  const tagRow = document.getElementById('skillTags');
+  tagRow.innerHTML = p.skills.map(s=>`<span class="tag tag-${s.cat}">${s.name}</span>`).join('');
+  const lb = document.getElementById('levelBadge');
+  lb.textContent = p.levelLabel;
+  lb.style.background = p.level==='entry'?'#EFF6FF':p.level==='mid'?'#F0FDF4':'#FFFBEB';
+  lb.style.color = p.level==='entry'?'#1D4ED8':p.level==='mid'?'#15803D':'#92400E';
+  document.getElementById('levelDesc').textContent = p.levelDesc;
+  setTimeout(()=>document.getElementById('levelFill').style.width=p.levelPct+'%', 200);
+  if(p.gaps && p.gaps.length) {
+    document.getElementById('gapsCard').style.display='block';
+    document.getElementById('gapTags').innerHTML = p.gaps.map(g=>`<span class="gap-chip">+ ${g}</span>`).join('');
+  }
+  buildResume(name);
+  buildJobs();
+}
+
+function buildResume(name) {
+  const p = PROFILES[currentPersona];
+  document.getElementById('resumeName').textContent = name;
+  document.getElementById('resumeHeadline').textContent = p.resume.headline;
+  document.getElementById('resumeSummary').textContent = p.resume.summary;
+  document.getElementById('resumeSkills').innerHTML = p.skills.map(s=>`<span class="tag tag-${s.cat}">${s.name}</span>`).join('');
+  document.getElementById('resumeExp').innerHTML = p.resume.experience.map(e=>
+    `<div style="margin-bottom:10px"><strong>${e.role}</strong> · <span style="color:var(--text-muted)">${e.duration}</span><div style="font-size:13px;color:var(--text-muted);margin-top:4px">${e.context}</div></div>`
+  ).join('');
+  document.getElementById('resumeLangs').innerHTML = p.resume.languages.join(' · ');
+  document.getElementById('resumeAvail').textContent = p.resume.availability;
+}
+
+function buildJobs() {
+  const p = PROFILES[currentPersona];
+  const jobs = currentPersona==='marie'
+    ? JOBS
+    : currentPersona==='reginald'
+    ? [
+        {title:'Instagram Community Manager',company:'BrandBoost Agency',pay:'$300–500/mo',method:'Wise',lang:'English',scam:18,match:87},
+        {title:'Social Media Content Moderator',company:'ContentGuard',pay:'$4–7/hr',method:'PayPal',lang:'English',scam:12,match:82},
+        {title:'E-commerce Product Lister',company:'ShopHelper',pay:'$2–4/listing',method:'PayPal',lang:'English',scam:20,match:74},
+        {title:'Online Research Assistant',company:'ResearchPro',pay:'$4–7/hr',method:'PayPal',lang:'English',scam:10,match:70},
+        {title:'Virtual Assistant',company:'TaskBridge',pay:'$5–8/hr',method:'PayPal',lang:'English',scam:8,match:65},
+      ]
+    : [
+        {title:'French-English Translator',company:'LinguaWork',pay:'$0.05–0.12/word',method:'Wise, PayPal',lang:'French + English',scam:10,match:96},
+        {title:'Haitian Creole Transcriptionist',company:'TranscribeNow',pay:'$0.80–1.50/audio-min',method:'PayPal',lang:'Haitian Creole',scam:5,match:91},
+        {title:'Chat Support (French)',company:'SupportHub',pay:'$7–11/hr',method:'Wise, PayPal',lang:'French',scam:8,match:85},
+        {title:'Data Entry Specialist',company:'DataStream LLC',pay:'$3–5/hr',method:'Payoneer',lang:'English',scam:15,match:72},
+        {title:'Online Research Assistant',company:'ResearchPro',pay:'$4–7/hr',method:'PayPal',lang:'English',scam:10,match:68},
+      ];
+
+  document.getElementById('jobList').innerHTML = jobs.map(j=>{
+    const scamClass = j.scam<=20?'scam-safe':j.scam<=50?'scam-warn':'scam-danger';
+    const scamLabel = j.scam<=20?'✓ Vérifye':j.scam<=50?'⚠ Verify':'✗ Risk Fwod';
+    return `<div class="job-card" onclick="selectJob('${j.title}')">
+      <div class="job-header">
+        <div>
+          <div class="job-title">${j.title}</div>
+          <div class="job-company">${j.company}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="match-score">${j.match}%</div>
+          <div style="font-size:11px;color:var(--text-muted)">match</div>
+        </div>
+      </div>
+      <div style="margin:6px 0">
+        <div class="match-bar"><div class="match-fill" style="width:${j.match}%"></div></div>
+      </div>
+      <div class="job-meta">
+        <div class="meta-pill">💵 ${j.pay}</div>
+        <div class="meta-pill">🌐 ${j.lang}</div>
+        <div class="meta-pill">💳 ${j.method}</div>
+        <div class="scam-badge ${scamClass}">${scamLabel}</div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button onclick="event.stopPropagation();goTo(5)" style="flex:1;padding:8px;border:1px solid var(--brand);border-radius:8px;background:none;color:var(--brand);font-weight:500;font-size:13px;cursor:pointer">Mwen Aplike ✓</button>
+        <button onclick="event.stopPropagation();selectJob('${j.title}')" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:8px;background:none;color:var(--text-muted);font-size:13px;cursor:pointer">Prepare Entèvyou →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectJob(title) {
+  document.getElementById('interviewJobTitle').textContent = title;
+  goTo(6);
+  initChat(title);
+}
+
+function initChat(jobTitle) {
+  const cw = document.getElementById('chatWindow');
+  cw.innerHTML = '';
+  chatStep = 0;
+  addMsg('ai', `Bonjou! Mwen pral ede ou prepare pou entèvyou <strong>${jobTitle}</strong>. Kòmanse di mwen yon ti kras sou ou menm — ki jan ou te travay anvan, ak poukisa ou vle travay a distans?`);
+}
+
+function addMsg(type, text) {
+  const cw = document.getElementById('chatWindow');
+  const div = document.createElement('div');
+  div.className = 'msg msg-'+type;
+  div.innerHTML = text;
+  cw.appendChild(div);
+  cw.scrollTop = cw.scrollHeight;
+}
+
+function addFeedback(text) {
+  const cw = document.getElementById('chatWindow');
+  const div = document.createElement('div');
+  div.className = 'msg msg-feedback';
+  div.innerHTML = '💬 <strong>Coaching:</strong> ' + text;
+  cw.appendChild(div);
+  cw.scrollTop = cw.scrollHeight;
+}
+
+function sendMsg() {
+  const inp = document.getElementById('chatInput');
+  const text = inp.value.trim();
+  if(!text || isAITyping) return;
+  inp.value = '';
+  addMsg('user', text);
+  isAITyping = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  setTimeout(()=>{
+    const qi = chatStep % INTERVIEW_QA.length;
+    addFeedback(INTERVIEW_QA[qi].fb);
+    setTimeout(()=>{
+      const nextQ = INTERVIEW_QA[(qi+1) % INTERVIEW_QA.length];
+      addMsg('ai', nextQ.q);
+      chatStep++;
+      isAITyping = false;
+      document.getElementById('sendBtn').disabled = false;
+    }, 800);
+  }, 1200);
+}
+
+// Init first job in tracker for interview
+document.getElementById('chatWindow') && initChat('Bilingual Customer Support');
+</script>
+</body>
+</html>
